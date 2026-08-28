@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Wishlist | Velora</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header style="display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+    <div class="logo"><a href="index.html" style="text-decoration:none; color:inherit; font-weight:bold; font-size:20px;">VELORA</a></div>
+    <div class="icons" style="font-size: 20px;">
+        <span onclick="window.location.href='wishlist.html'" style="cursor:pointer; margin-right: 15px;" title="Wishlist">❤️</span>
+        <span onclick="window.location.href='cart.html'" style="cursor:pointer;" title="Cart">🛒</span>
+    </div>
+</header>
+
+<div style="max-width: 1100px; margin: 30px auto; padding: 0 20px;">
+    <h2 style="text-align: center; margin-bottom: 30px;">❤️ My Wishlist</h2>
+    <div id="wishlist-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 25px;"></div>
+</div>
+
+<script src="wishlist.js"></script>
+</body>
+</html>

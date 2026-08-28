@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Velora by Anisha</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+    <div class="logo">VELORA <span>by Anisha</span></div>
+
+    <nav>
+        <a href="#">Home</a>
+        <a href="#products">Shop</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+    </nav>
+
+   <div class="icons">
+        <input type="text" id="search" placeholder="Search...">
+        <span onclick="goToLogin()" title="Login" style="cursor:pointer;">👤</span>
+        <span onclick="goToWishlist()" title="Wishlist" style="cursor:pointer; margin: 0 10px;">❤️</span>
+        <span onclick="goToCart()" title="Cart" style="cursor:pointer;">🛒</span>
+    </div>
+</header>
+
+<!-- PROMO BANNER -->
+<section style="
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 60px 50px;
+    border-radius: 20px;
+    background: linear-gradient(90deg, rgba(235,212,238,0.95) 0%, rgba(253,222,238,0.7) 50%, rgba(255,255,255,0.2) 100%), 
+                url('https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1200') center/cover no-repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+">
+    <h1 style="font-size: 42px; font-weight: 800; color: #1a1a1a; margin: 0 0 10px 0; letter-spacing: -0.5px;">GET 25% OFF</h1>
+    <p style="font-size: 18px; color: #4a4a4a; margin: 0 0 25px 0; font-weight: 500;">On your first order 💜</p>
+    <a href="#products" style="
+        padding: 12px 28px;
+        background-color: #6c5ce7;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 25px;
+        font-weight: 600;
+        font-size: 15px;
+        box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
+        transition: transform 0.2s ease, background 0.2s ease;
+    ">Shop Now</a>
+</section>
+
+<!-- CATEGORIES -->
+<div class="categories">
+    <button onclick="filterProducts('all')">All</button>
+    <button onclick="filterProducts('dress')">Dresses</button>
+    <button onclick="filterProducts('top')">Tops</button>
+    <button onclick="filterProducts('bag')">Bags</button>
+    <button onclick="filterProducts('shoes')">Shoes</button>
+    <button onclick="filterProducts('beauty')">Beauty</button>
+</div>
+
+<!-- PRODUCTS -->
+<section class="products" id="products"></section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+    <div class="about-container">
+
+        <!-- IMAGE -->
+       <div class="about-img">
+            <img src="https://images.pexels.com/photos/994523/pexels-photo-994523.jpeg" alt="fashion">
+        </div>
+
+        <div class="about-text">
+            <h2>About Velora 💜</h2>
+            <p>
+                Velora by Anisha is a modern fashion e-commerce platform designed for women 
+                who love style, elegance, and confidence.
+            </p>
+
+            <p>
+                Inspired by global trends, Velora offers trendy outfits, accessories, 
+                and beauty essentials.
+            </p>
+
+            <p class="tagline">
+                ✨ Designed for Confidence. Styled for You.
+            </p>
+        </div>
+
+    </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+
+    <h2>Contact Us 💌</h2>
+
+    <div class="contact-container">
+
+        <div class="contact-info">
+            <p>📍 Mumbai, India</p>
+            <p>📧 velora@email.com</p>
+            <p>📞 +91 98765 43210</p>
+        </div>
+
+        <form class="contact-form">
+            <input type="text" placeholder="Your Name" required>
+            <input type="email" placeholder="Your Email" required>
+            <textarea placeholder="Your Message" required></textarea>
+            <button>Send Message</button>
+        </form>
+
+    </div>
+
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <p>© 2026 Velora by Anisha 💜 | All Rights Reserved</p>
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+</html>

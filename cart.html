@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Cart | Velora</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header style="display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+    <div style="display: flex; align-items: center; gap: 12px;">
+        <span onclick="window.location.href='index.html'" title="Home" style="cursor: pointer; font-size: 20px;">🏠</span>
+        <div class="logo">
+            <a href="index.html" style="text-decoration: none; color: inherit; font-weight: bold; font-size: 20px;">VELORA</a>
+        </div>
+    </div>
+    <div class="icons" style="font-size: 20px;">
+        <span onclick="window.location.href='wishlist.html'" style="cursor: pointer; margin-right: 15px;" title="Wishlist">❤️</span>
+        <span onclick="window.location.href='cart.html'" style="cursor: pointer;" title="Cart">🛒</span>
+    </div>
+</header>
+
+<div class="cart-page-container" style="max-width: 800px; margin: 40px auto; padding: 20px;">
+    <h2>Your Cart 🛒</h2>
+    <div id="cart" style="margin-top: 20px;"></div>
+    
+    <div class="cart-summary" style="margin-top: 30px; border-top: 2px solid #eee; padding-top: 20px;">
+        <h3 id="total">Total ₹0</h3>
+        <button onclick="checkout()" style="padding: 10px 24px; cursor: pointer; border: none; background: #6c5ce7; color: white; border-radius: 6px; font-weight: bold;">Checkout</button>
+    </div>
+</div>
+
+<script src="cart.js"></script>
+</body>
+</html>

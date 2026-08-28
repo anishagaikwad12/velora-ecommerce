@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Details | Velora</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body style="background-color: #f5f5f6; font-family: sans-serif; margin: 0; padding: 0;">
+
+<header style="display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+    <div style="display: flex; align-items: center; gap: 12px;">
+        <span onclick="window.location.href='index.html'" title="Home" style="cursor: pointer; font-size: 20px;">🏠</span>
+        <div class="logo">
+            <a href="index.html" style="text-decoration: none; color: inherit; font-weight: bold; font-size: 20px;">VELORA</a>
+        </div>
+    </div>
+    <div class="icons" style="font-size: 20px;">
+        <span onclick="window.location.href='wishlist.html'" style="cursor: pointer; margin-right: 15px;" title="Wishlist">❤️</span>
+        <span onclick="window.location.href='cart.html'" style="cursor: pointer;" title="Cart">🛒</span>
+    </div>
+</header>
+
+<div style="max-width: 1000px; margin: 30px auto; background: #fff; border-radius: 8px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); display: flex; gap: 40px; flex-wrap: wrap;">
+    
+    <!-- Left Column: Image -->
+    <div style="flex: 1; min-width: 320px;">
+        <img id="productImg" src="" alt="Product Image" style="width: 100%; border-radius: 8px; border: 1px solid #eee;">
+    </div>
+
+    <!-- Right Column: Product Meta -->
+    <div style="flex: 1.2; min-width: 320px;">
+        <p id="productBrand" style="text-transform: uppercase; font-size: 14px; color: #888; font-weight: bold; margin: 0;"></p>
+        <h2 id="productName" style="font-size: 22px; color: #282c3f; margin: 6px 0 12px 0;"></h2>
+        
+        <!-- Ratings Badge -->
+        <div style="display: inline-flex; align-items: center; gap: 6px; border: 1px solid #eaeaec; padding: 4px 8px; border-radius: 4px; margin-bottom: 15px;">
+            <span id="productRating" style="font-weight: bold; font-size: 13px;"></span>
+            <span style="color: #7e818c; font-size: 13px;">|</span>
+            <span id="productReviews" style="color: #7e818c; font-size: 13px;"></span>
+        </div>
+        
+        <hr style="border: 0; border-top: 1px solid #eaeaec; margin-bottom: 15px;">
+
+        <!-- Pricing Section -->
+        <div style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 20px;">
+            <span id="productPrice" style="font-size: 24px; font-weight: bold; color: #282c3f;"></span>
+            <span id="productMrp" style="font-size: 16px; color: #94969f; text-decoration: line-through;"></span>
+            <span id="productDiscount" style="font-size: 16px; font-weight: bold; color: #ff905a;"></span>
+        </div>
+
+        <!-- Size Selection -->
+        <div style="margin-bottom: 25px;">
+            <p style="font-size: 14px; font-weight: bold; margin-bottom: 10px;">SELECT SIZE</p>
+            <div id="sizeContainer" style="display: flex; gap: 10px;"></div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div style="display: flex; gap: 15px; margin-bottom: 25px;">
+            <button onclick="addToCartDetail()" style="flex: 1; padding: 14px; background: #ff3e6c; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 15px;">ADD TO CART 🛒</button>
+            <button onclick="addToWishlistDetail()" style="flex: 1; padding: 14px; background: white; color: #282c3f; border: 1px solid #d4d5d9; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 15px;">WISHLIST ❤️</button>
+        </div>
+
+        <!-- Delivery & Pincode Checker -->
+        <div style="border-top: 1px solid #eaeaec; border-bottom: 1px solid #eaeaec; padding: 15px 0; margin-bottom: 20px;">
+            <p style="font-size: 14px; font-weight: bold; margin-bottom: 8px;">DELIVERY OPTIONS 🚚</p>
+            <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                <input type="text" id="pincodeInput" placeholder="Enter Pincode" style="padding: 8px 12px; border: 1px solid #d4d5d9; border-radius: 4px; font-size: 14px; width: 140px;">
+                <button onclick="checkPincode()" style="padding: 8px 14px; background: transparent; color: #ff3e6c; border: 1px solid #ff3e6c; border-radius: 4px; font-weight: bold; cursor: pointer;">Check</button>
+            </div>
+            <p id="pincodeStatus" style="font-size: 12px; color: #282c3f; margin: 0;"></p>
+        </div>
+
+        <!-- Best Offers Section -->
+        <div style="margin-bottom: 25px; background: #fff9f9; border: 1px dashed #ff3e6c; padding: 12px; border-radius: 6px;">
+            <p style="font-size: 13px; font-weight: bold; color: #282c3f; margin: 0 0 6px 0;">BEST OFFERS 🏷️</p>
+            <ul style="margin: 0; padding-left: 18px; font-size: 12px; color: #535766; line-height: 1.6;">
+                <li>Get 10% Instant Discount on select Credit Cards</li>
+                <li>Flat ₹150 Cashback on first UPI order</li>
+                <li>7 Days Easy Return & Exchange</li>
+            </ul>
+        </div>
+
+        <!-- Product Description & Material Care -->
+        <div>
+            <p style="font-size: 14px; font-weight: bold; margin-bottom: 6px;">PRODUCT DETAILS</p>
+            <p id="productDesc" style="font-size: 13px; color: #535766; line-height: 1.6; margin-bottom: 15px;"></p>
+            
+            <p style="font-size: 14px; font-weight: bold; margin-bottom: 6px;">MATERIAL & CARE</p>
+            <p id="productMaterial" style="font-size: 13px; color: #535766; margin: 0;"></p>
+        </div>
+    </div>
+</div>
+
+<script src="product.js"></script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Velora Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="split-body">
+
+<div class="split-container">
+
+    <!-- LEFT SIDE -->
+    <div class="left-panel">
+        <h1>Velora</h1>
+        <h2>By Anisha</h2>
+        <p>Where Style meets Elegance 💜</p>
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="right-panel">
+        <div class="login-box">
+
+            <h2 id="formTitle">Welcome Back 👋</h2>
+            <p class="subtitle">Login to continue shopping</p>
+
+            <!-- NAME (only for signup) -->
+            <input type="text" id="name" placeholder="Full Name" style="display:none;">
+
+            <input type="email" id="email" placeholder="Email">
+            <input type="password" id="password" placeholder="Password">
+
+            <button onclick="handleAuth()" id="authBtn">Log In</button>
+
+            <p class="toggle-text" onclick="toggleForm()" id="toggleText">
+                Don’t have an account? Sign Up
+            </p>
+
+        </div>
+    </div>
+
+</div>
+
+<script src="login.js"></script>
+</body>
+</html>
