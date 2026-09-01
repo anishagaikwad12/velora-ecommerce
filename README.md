@@ -1,7 +1,3 @@
-Here’s your **clean, properly formatted README with good spacing, headings, and font hierarchy** (GitHub-ready) 👇
-
----
-
 # 💜 Velora – Fashion E-commerce Website
 
 Velora is a modern **full-stack fashion e-commerce web application** designed with a premium UI and smooth shopping experience.
@@ -123,11 +119,42 @@ python manage.py runserver
 
 <img width="100%" alt="Login Page" src="https://github.com/user-attachments/assets/24e8dcbb-e4db-40b3-892a-dca8d21dd6e9" />
 
+### 🔐 Home Page
+
+<img width="1344" height="624" alt="image" src="https://github.com/user-attachments/assets/dd3acaee-4ae3-42dd-b1af-36412ed0f996" />
+<img width="1344" height="620" alt="image" src="https://github.com/user-attachments/assets/d4cfdeef-69d6-43f9-b254-a64c2b492b7c" />
+
+### 🔐 About Page
+
+<img width="1341" height="629" alt="image" src="https://github.com/user-attachments/assets/d51d4ccf-b86d-4a09-8ccf-52691aec7e60" />
+
+### 🔐 Contact Page
+
+<img width="1341" height="618" alt="image" src="https://github.com/user-attachments/assets/8bfa564e-f33c-460e-ae51-adc066cf3109" />
+
+### 🔐 WishList Page
+
+<img width="1356" height="620" alt="image" src="https://github.com/user-attachments/assets/4082d4e5-8355-45d6-b29b-1c3e5774068e" />
+
+### 🔐 Order Page
+
+<img width="1311" height="595" alt="image" src="https://github.com/user-attachments/assets/b6856b3e-fce8-412d-ab90-392985f53e5f" />
+<img width="1293" height="617" alt="image" src="https://github.com/user-attachments/assets/62c51e75-c199-42f8-a7c1-1b955d3d0a35" />
+
+### 🔐 View Detail Page
+
+<img width="1356" height="632" alt="image" src="https://github.com/user-attachments/assets/576d0f0e-089f-4f37-8a09-61f42c2f5414" />
+<img width="1116" height="574" alt="image" src="https://github.com/user-attachments/assets/972b4f58-2213-4f1b-945b-a2979729d00a" />
+
+### 🔐 Payment Page
+
+<img width="1071" height="612" alt="image" src="https://github.com/user-attachments/assets/fd55a861-36ec-465b-9879-d0564463a5c6" />
+
 ---
 
 ## 🔗 Live Demo
 
-*Add your GitHub Pages link here*
+
 
 ---
 
