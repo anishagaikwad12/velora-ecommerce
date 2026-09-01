@@ -47,17 +47,8 @@ velora-ecommerce/
 
 🔄 User Flow
 
- Home Page 
-   ↓
-Product Listing 
-   ↓
-Product Detail Page 
-   ↓
-Add to Cart / Wishlist 
-   ↓
-Cart Page
-   ↓
-(Checkout – Future Scope)
+Home → Product Listing → Product Detail Page →
+Add to Cart / Wishlist → Checkout (future scope)
 ---------------------------------------------------------------------------------------
 ⚙️** How to Run the Project**
 
