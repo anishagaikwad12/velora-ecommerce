@@ -44,6 +44,7 @@ velora-ecommerce/
 │
 └── README.md
 ---------------------------------------------------------------------------------------
+
 🔄 User Flow
 
  Home Page 
@@ -58,7 +59,7 @@ Cart Page
    ↓
 (Checkout – Future Scope)
 ---------------------------------------------------------------------------------------
-⚙️ How to Run the Project
+⚙️** How to Run the Project**
 
 🔹 Step 1: Clone the Repository
 > git clone https://github.com/anishagaikwad12/velora-ecommerce.git
