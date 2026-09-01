@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velora - Demo Checkout</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f6f9; padding: 40px 20px; }
+        .checkout-container { max-width: 500px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+        h2 { text-align: center; color: #333; margin-bottom: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: 600; color: #555; }
+        input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
+        .order-summary { background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+        .summary-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 15px; }
+        .total-row { font-weight: bold; border-top: 1px solid #ddd; padding-top: 8px; font-size: 18px; color: #2c3e50; }
+        .coupon-box { display: flex; gap: 8px; margin-top: 10px; }
+        .coupon-btn { background: #2c3e50; color: white; border: none; padding: 10px 15px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+        .pay-btn { width: 100%; background: #27ae60; color: white; border: none; padding: 14px; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.2s; margin-top: 10px; }
+        .pay-btn:hover { background: #219150; }
+    </style>
+</head>
+<body>
+
+<div class="checkout-container">
+    <h2>Demo Checkout</h2>
+
+    <div class="order-summary">
+        <div class="summary-row"><span>Total Items:</span><span id="summary-qty">0</span></div>
+        <div class="summary-row"><span>Subtotal:</span><span>₹<span id="summary-subtotal">0</span></span></div>
+        <div class="summary-row" id="discount-row" style="display:none; color: #27ae60;"><span>Discount Applied:</span><span>-₹<span id="summary-discount">0</span></span></div>
+        <div class="summary-row total-row"><span>Total Amount:</span><span>₹<span id="summary-total">0</span></span></div>
+        
+        <div class="coupon-box">
+            <input type="text" id="coupon-code" placeholder="Try coupon VELORA10">
+            <button type="button" class="coupon-btn" onclick="applyCoupon()">Apply</button>
+        </div>
+        <small id="coupon-msg" style="display:block; margin-top: 5px; font-weight: 600;"></small>
+    </div>
+
+    <form id="payment-form">
+        <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="cust-name" placeholder="John Doe" required>
+        </div>
+
+        <div class="form-group">
+            <label>Shipping Address</label>
+            <input type="text" id="cust-address" placeholder="123 Street Name, City" required>
+        </div>
+
+        <div class="form-group">
+            <label>Payment Method</label>
+            <select id="payment-method">
+                <option value="UPI">UPI / GPay / PhonePe</option>
+                <option value="Card">Credit / Debit Card</option>
+                <option value="COD">Cash on Delivery (Demo)</option>
+            </select>
+        </div>
+
+        <button type="submit" class="pay-btn" id="submit-btn">Pay & Place Order</button>
+    </form>
+</div>
+
+<script>
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const totalQty = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+    const subtotal = cart.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
+
+    let finalTotal = subtotal;
+    let discountAmount = 0;
+
+    document.getElementById('summary-qty').textContent = totalQty;
+    document.getElementById('summary-subtotal').textContent = subtotal;
+    document.getElementById('summary-total').textContent = subtotal;
+
+    function applyCoupon() {
+        const code = document.getElementById('coupon-code').value.trim().toUpperCase();
+        const msg = document.getElementById('coupon-msg');
+        
+        if (code === 'VELORA10') {
+            discountAmount = subtotal * 0.10;
+            msg.style.color = '#27ae60';
+            msg.textContent = '10% discount applied!';
+        } else if (code === 'FLAT100') {
+            discountAmount = Math.min(subtotal, 100);
+            msg.style.color = '#27ae60';
+            msg.textContent = '₹100 discount applied!';
+        } else {
+            discountAmount = 0;
+            msg.style.color = '#e74c3c';
+            msg.textContent = 'Invalid coupon code.';
+        }
+
+        finalTotal = subtotal - discountAmount;
+        document.getElementById('summary-discount').textContent = discountAmount.toFixed(2);
+        document.getElementById('discount-row').style.display = discountAmount > 0 ? 'flex' : 'none';
+        document.getElementById('summary-total').textContent = finalTotal.toFixed(2);
+    }
+
+    document.getElementById('payment-form').addEventListener('submit', async function(e) { 
+        e.preventDefault(); 
+        const btn = document.getElementById('submit-btn');
+        btn.disabled = true;
+        btn.textContent = "Processing Order...";
+        
+        const orderId = "VELORA-" + Math.floor(100000 + Math.random() * 900000); 
+
+        const newOrder = { 
+            id: orderId, 
+            order_id: orderId,
+            name: document.getElementById('cust-name').value, 
+            customer_name: document.getElementById('cust-name').value,
+            address: document.getElementById('cust-address').value, 
+            paymentMethod: document.getElementById('payment-method').value, 
+            payment_method: document.getElementById('payment-method').value,
+            total: finalTotal, 
+            total_amount: finalTotal,
+            discount_applied: discountAmount,
+            items: cart, 
+            status: "Placed", 
+            date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) 
+        }; 
+
+        let allOrders = JSON.parse(localStorage.getItem('allOrders') || '[]'); 
+        allOrders.unshift(newOrder); 
+        localStorage.setItem('allOrders', JSON.stringify(allOrders)); 
+
+        try {
+            await fetch("http://127.0.0.1:8000/api/orders/", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(newOrder)
+            });
+        } catch (error) {
+            console.warn("Django backend offline. Order stored locally.");
+        }
+
+        localStorage.removeItem('cart'); 
+        window.location.href = "orders.html"; 
+    });
+</script>
+
+</body>
+</html>

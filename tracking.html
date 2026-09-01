@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velora - Order Tracking & Receipt</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f6f9; padding: 40px 20px; }
+        .tracking-card { max-width: 650px; margin: 0 auto; background: white; padding: 35px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+        .success-header { text-align: center; margin-bottom: 25px; }
+        .success-header h2 { color: #27ae60; margin: 0 0 5px 0; }
+        .order-id-badge { background: #e8f8f5; color: #16a085; padding: 6px 14px; border-radius: 20px; font-weight: bold; display: inline-block; font-size: 14px; margin-top: 5px; }
+        
+        /* TIMELINE TRACKER */
+        .timeline { display: flex; justify-content: space-between; margin: 35px 0; position: relative; }
+        .timeline::before { content: ''; position: absolute; top: 18px; left: 12%; width: 76%; height: 3px; background: #e0e0e0; z-index: 1; }
+        .step { position: relative; z-index: 2; background: white; padding: 0 8px; text-align: center; }
+        .circle { width: 36px; height: 36px; border-radius: 50%; background: #27ae60; color: white; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; font-weight: bold; font-size: 14px; }
+        .circle.pending { background: #e0e0e0; color: #888; }
+        .label { font-size: 12px; color: #444; font-weight: 600; }
+        
+        /* ORDER DETAILS & RECEIPT */
+        .receipt-box { background: #f9fafb; border: 1px dashed #d1d5db; padding: 20px; border-radius: 8px; margin-bottom: 25px; }
+        .receipt-title { font-weight: bold; color: #333; margin-bottom: 12px; border-bottom: 1px solid #e5e7eb; padding-bottom: 8px; }
+        .info-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; color: #555; }
+        
+        .items-list { margin: 15px 0; border-top: 1px solid #e5e7eb; padding-top: 10px; }
+        .item-row { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 5px; }
+        
+        .total-row { display: flex; justify-content: space-between; font-weight: bold; font-size: 16px; color: #2c3e50; border-top: 2px solid #333; padding-top: 10px; margin-top: 10px; }
+        
+        /* BUTTONS */
+        .actions { display: flex; gap: 10px; }
+        .btn { flex: 1; text-align: center; padding: 12px; border-radius: 6px; font-weight: bold; text-decoration: none; cursor: pointer; border: none; font-size: 14px; }
+        .btn-print { background: #6c5ce7; color: white; }
+        .btn-home { background: #edf2f7; color: #2d3748; }
+        
+        @media print {
+            .actions, .timeline { display: none; }
+            body { background: white; padding: 0; }
+            .tracking-card { box-shadow: none; border: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="tracking-card">
+    <div class="success-header">
+        <h2>🎉 Order Confirmed!</h2>
+        <p style="color:#666; margin:0;">Thank you for shopping with Velora by Anisha.</p>
+        <div class="order-id-badge">Order ID: <span id="track-id">#VELORA-0000</span></div>
+    </div>
+    
+    <!-- Visual Progress Tracker -->
+    <div class="timeline">
+        <div class="step">
+            <div class="circle">✓</div>
+            <div class="label">Placed</div>
+        </div>
+        <div class="step">
+            <div class="circle">✓</div>
+            <div class="label">Packed</div>
+        </div>
+        <div class="step">
+            <div class="circle pending">3</div>
+            <div class="label">Out for Delivery</div>
+        </div>
+        <div class="step">
+            <div class="circle pending">4</div>
+            <div class="label">Delivered</div>
+        </div>
+    </div>
+
+    <!-- Order Receipt / Information -->
+    <div class="receipt-box">
+        <div class="receipt-title">📦 Order Summary & Shipping Details</div>
+        
+        <div class="info-row"><span>Customer Name:</span> <strong id="track-name">-</strong></div>
+        <div class="info-row"><span>Shipping Address:</span> <strong id="track-address">-</strong></div>
+        <div class="info-row"><span>Payment Method:</span> <strong id="track-payment">-</strong></div>
+        <div class="info-row"><span>Order Date:</span> <strong id="track-date">-</strong></div>
+        
+        <div class="items-list" id="track-items">
+            <!-- Items rendered via JS -->
+        </div>
+
+        <div class="total-row">
+            <span>Total Paid:</span>
+            <span>₹<span id="track-total">0</span></span>
+        </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="actions">
+        <button class="btn btn-print" onclick="window.print()">📄 Print Invoice</button>
+        <a href="index.html" class="btn btn-home">🛍️ Back to Store</a>
+    </div>
+</div>
+
+<script>
+    // Fetch order stored from payment page
+    const order = JSON.parse(localStorage.getItem('currentOrder') || '{}');
+
+    if (order.id) {
+        document.getElementById('track-id').textContent = order.id;
+        document.getElementById('track-name').textContent = order.name || 'Customer';
+        document.getElementById('track-address').textContent = order.address || 'Standard Delivery';
+        document.getElementById('track-payment').textContent = order.paymentMethod || 'Online Payment';
+        document.getElementById('track-date').textContent = order.date || new Date().toLocaleDateString();
+        document.getElementById('track-total').textContent = order.total || '0';
+
+        // Display ordered items
+        const itemsContainer = document.getElementById('track-items');
+        if (order.items && order.items.length > 0) {
+            itemsContainer.innerHTML = '<strong>Ordered Items:</strong>';
+            order.items.forEach(item => {
+                itemsContainer.innerHTML += `
+                    <div class="item-row">
+                        <span>${item.name} (x${item.quantity || 1})</span>
+                        <span>₹${item.price * (item.quantity || 1)}</span>
+                    </div>
+                `;
+            });
+        }
+    } else {
+        document.querySelector('.tracking-card').innerHTML = `
+            <h2 style="text-align:center; color:#e74c3c;">No active order found!</h2>
+            <p style="text-align:center;"><a href="index.html" class="btn btn-print" style="display:inline-block; text-decoration:none;">Go to Shop</a></p>
+        `;
+    }
+</script>
+
+</body>
+</html>

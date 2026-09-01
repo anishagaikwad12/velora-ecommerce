@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velora - Orders Hub</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f6f9; padding: 30px 15px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        h1 { text-align: center; color: #2c3e50; margin-bottom: 25px; }
+        .order-card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+        .order-header { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px; }
+        .order-id { font-weight: bold; color: #2c3e50; }
+        .status-badge { padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 600; background: #e3f2fd; color: #1976d2; }
+        .status-Cancelled { background: #ffebee; color: #c62828; }
+        .status-Refunded { background: #e8f5e9; color: #2e7d32; }
+        
+        /* Tracker Bar */
+        .tracker-container { display: flex; justify-content: space-between; margin: 25px 0 15px 0; position: relative; }
+        .tracker-container::before { content: ''; position: absolute; top: 14px; left: 10%; right: 10%; height: 3px; background: #e0e0e0; z-index: 1; }
+        .step-wrapper { display: flex; flex-direction: column; align-items: center; z-index: 2; background: white; padding: 0 5px; }
+        .step { width: 30px; height: 30px; border-radius: 50%; border: 3px solid #e0e0e0; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px; color: #777; background: white; }
+        .step.completed { border-color: #27ae60; background: #27ae60; color: white; }
+        .step.active { border-color: #3498db; color: #3498db; }
+        .step-label { font-size: 11px; margin-top: 5px; color: #555; }
+
+        .action-group { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px; }
+        .btn { padding: 8px 14px; border: none; border-radius: 6px; font-weight: 600; font-size: 13px; cursor: pointer; transition: 0.2s; }
+        .btn-danger { background: #e74c3c; color: white; }
+        .btn-warning { background: #f39c12; color: white; }
+        .btn-review { background: #3498db; color: white; }
+        .btn-refund { background: #9b59b6; color: white; }
+        .btn-invoice { background: #2c3e50; color: white; }
+        .feedback-box { background: #f8f9fa; padding: 12px; border-radius: 6px; margin-top: 10px; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>My Orders</h1>
+    <div id="orders-list"></div>
+</div>
+
+<script>
+    const STATUS_STAGES = ['Placed', 'Packed', 'Out for Delivery', 'Delivered'];
+
+    function renderTracker(currentStatus) {
+        if (['Cancelled', 'Refunded', 'Refund Processing', 'Replacement Requested'].includes(currentStatus)) {
+            return `<div style="text-align:center; padding: 10px; background:#fff3cd; color:#856404; border-radius:6px; font-weight:600; margin: 15px 0;">Special Status: ${currentStatus}</div>`;
+        }
+
+        const currentIndex = STATUS_STAGES.indexOf(currentStatus);
+        
+        return `
+            <div class="tracker-container">
+                ${STATUS_STAGES.map((stage, idx) => {
+                    let stepClass = "";
+                    let content = idx + 1;
+                    if (idx < currentIndex) { stepClass = "completed"; content = "✓"; }
+                    else if (idx === currentIndex) { stepClass = "active"; }
+                    return `
+                        <div class="step-wrapper">
+                            <div class="step ${stepClass}">${content}</div>
+                            <div class="step-label">${stage}</div>
+                        </div>
+                    `;
+                }).join('')}
+            </div>
+        `;
+    }
+
+    function loadOrders() {
+        let orders = JSON.parse(localStorage.getItem('allOrders') || '[]');
+        const listContainer = document.getElementById('orders-list');
+        
+        if (orders.length === 0) {
+            listContainer.innerHTML = "<p style='text-align:center;'>No orders placed yet.</p>";
+            return;
+        }
+
+        listContainer.innerHTML = orders.map((order, idx) => `
+            <div class="order-card">
+                <div class="order-header">
+                    <div>
+                        <span class="order-id">#${order.id}</span>
+                        <div style="font-size: 12px; color: #777;">Placed on: ${order.date || 'Today'}</div>
+                    </div>
+                    <div>
+                        <span class="status-badge status-${order.status}">${order.status}</span>
+                    </div>
+                </div>
+
+                ${renderTracker(order.status)}
+
+                <p><strong>Customer:</strong> ${order.name}</p>
+                <p><strong>Address:</strong> ${order.address}</p>
+                <p><strong>Total Amount:</strong> ₹${order.total}</p>
+
+                ${order.feedback ? `
+                    <div class="feedback-box">
+                        <strong>Your Review (${order.rating}★):</strong> "${order.feedback}"
+                    </div>
+                ` : ''}
+
+                ${order.action_reason ? `
+                    <div class="feedback-box" style="border-left: 3px solid #e74c3c;">
+                        <strong>Action Detail:</strong> ${order.action_reason}
+                    </div>
+                ` : ''}
+
+                <div class="action-group">
+                    <button class="btn btn-invoice" onclick="downloadInvoice('${order.id}')">📄 Download PDF Invoice</button>
+
+                    ${order.status === 'Placed' ? `
+                        <button class="btn btn-danger" onclick="cancelOrder('${order.id}', ${idx})">Cancel Order</button>
+                    ` : ''}
+
+                    ${order.status === 'Delivered' ? `
+                        <button class="btn btn-warning" onclick="requestReplace('${order.id}', ${idx})">Replace Product</button>
+                        <button class="btn btn-refund" onclick="requestRefund('${order.id}', ${idx})">Request Refund</button>
+                        ${!order.feedback ? `<button class="btn btn-review" onclick="addReview('${order.id}', ${idx})">Write Review</button>` : ''}
+                    ` : ''}
+                </div>
+            </div>
+        `).join('');
+    }
+
+    async function updateOrderState(orderId, idx, updatedFields) {
+        let orders = JSON.parse(localStorage.getItem('allOrders') || '[]');
+        orders[idx] = { ...orders[idx], ...updatedFields };
+        localStorage.setItem('allOrders', JSON.stringify(orders));
+
+        try {
+            await fetch(`http://127.0.0.1:8000/api/orders/${orderId}/`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(updatedFields)
+            });
+        } catch (e) {
+            console.warn("Backend update skipped. Saved locally.");
+        }
+        loadOrders();
+    }
+
+    function cancelOrder(orderId, idx) {
+        const reason = prompt("Enter cancellation reason:");
+        if (reason) updateOrderState(orderId, idx, { status: "Cancelled", refund_status: "Refund Initiated", action_reason: "Cancelled: " + reason });
+    }
+
+    function requestReplace(orderId, idx) {
+        const reason = prompt("Enter replacement reason (e.g. Damaged product):");
+        if (reason) updateOrderState(orderId, idx, { status: "Replacement Requested", action_reason: "Replacement: " + reason });
+    }
+
+    function requestRefund(orderId, idx) {
+        const reason = prompt("Enter reason for refund:");
+        if (reason) updateOrderState(orderId, idx, { status: "Refund Processing", refund_status: "Pending", action_reason: "Refund: " + reason });
+    }
+
+    function addReview(orderId, idx) {
+        const rating = prompt("Rate (1-5 stars):", "5");
+        const feedback = prompt("Write review feedback:");
+        if (rating && feedback) updateOrderState(orderId, idx, { rating: parseInt(rating), feedback: feedback });
+    }
+
+    function downloadInvoice(orderId) {
+        let orders = JSON.parse(localStorage.getItem('allOrders') || '[]');
+        let order = orders.find(o => o.id === orderId);
+        
+        let invoiceWindow = window.open('', '_blank');
+        invoiceWindow.document.write(`
+            <html><head><title>Invoice - ${order.id}</title></head>
+            <body style="font-family: sans-serif; padding: 30px;">
+                <h2>Velora E-Commerce Invoice</h2>
+                <hr>
+                <p><strong>Order ID:</strong> ${order.id}</p>
+                <p><strong>Customer Name:</strong> ${order.name}</p>
+                <p><strong>Address:</strong> ${order.address}</p>
+                <p><strong>Date:</strong> ${order.date || 'Today'}</p>
+                <h3>Total Paid: ₹${order.total}</h3>
+                <hr>
+                <script>window.print();<\/script>
+            </body></html>
+        `);
+    }
+
+    loadOrders();
+</script>
+
+</body>
+</html>
