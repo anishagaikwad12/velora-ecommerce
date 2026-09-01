@@ -1,3 +1,11 @@
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import ProductViewSet, WishlistViewSet, manage_orders
+
+router = DefaultRouter()
+router.register(r'products', ProductViewSet)
+router.register(r'wishlist', WishlistViewSet)
+
 from rest_framework import viewsets, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
