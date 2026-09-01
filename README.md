@@ -45,15 +45,23 @@ velora-ecommerce/
 │   ├── login.html
 │   ├── cart.html
 │   ├── product.html
+│   ├── orders.html
+│   ├── payment.html
+│   ├── tracking.html
+│   ├── wishlist.html
 │   ├── style.css
 │   └── script.js
+│   ├── server.js
+│   ├── login.js
+│   ├── cart.js
+│   ├── wishlist.js
 │
 ├── velora_backend/
 │   ├── manage.py
 │   ├── velora_backend/
 │   └── db.sqlite3
-│
-└── README.md
+
+
 ```
 
 ---
@@ -122,6 +130,7 @@ python manage.py runserver
 ### 🔐 Home Page
 
 <img width="1344" height="624" alt="image" src="https://github.com/user-attachments/assets/dd3acaee-4ae3-42dd-b1af-36412ed0f996" />
+
 <img width="1344" height="620" alt="image" src="https://github.com/user-attachments/assets/d4cfdeef-69d6-43f9-b254-a64c2b492b7c" />
 
 ### 🔐 About Page
@@ -139,11 +148,13 @@ python manage.py runserver
 ### 🔐 Order Page
 
 <img width="1311" height="595" alt="image" src="https://github.com/user-attachments/assets/b6856b3e-fce8-412d-ab90-392985f53e5f" />
+
 <img width="1293" height="617" alt="image" src="https://github.com/user-attachments/assets/62c51e75-c199-42f8-a7c1-1b955d3d0a35" />
 
 ### 🔐 View Detail Page
 
 <img width="1356" height="632" alt="image" src="https://github.com/user-attachments/assets/576d0f0e-089f-4f37-8a09-61f42c2f5414" />
+
 <img width="1116" height="574" alt="image" src="https://github.com/user-attachments/assets/972b4f58-2213-4f1b-945b-a2979729d00a" />
 
 ### 🔐 Payment Page
