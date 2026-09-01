@@ -183,6 +183,3 @@ python manage.py runserver
 **Anisha Gaikwad**
 💜 Designed & Developed with passion
 
----
-
-Just tell 👍
